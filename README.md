@@ -5,7 +5,7 @@ LOON is a simple file format for configuration data.  It is intended to be easy 
 
 An example LOON message is as follows:
 ```
-# Some details about me
+# Some fake details about me
 com.codalogic.aboutme {
     Name: Pete
     Height: 178
