@@ -25,9 +25,9 @@ com.codalogic.aboutme {
         B
         C
     ]
-    History << END
+    History <<END
         Born a long time again
         in a galaxy far, far away.
-    END
+    <<END
 }
 ```
