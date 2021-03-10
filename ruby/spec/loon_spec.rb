@@ -1,5 +1,5 @@
 #----------------------------------------------------------------------------
-# Licensed under the MIT/X11 license - https:#opensource.org/licenses/MIT
+# Licensed under the MIT/X11 license - https://opensource.org/licenses/MIT
 #----
 # Copyright (c) 2021, Codalogic Ltd (www.codalogic.com)
 #
