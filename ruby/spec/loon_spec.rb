@@ -23,7 +23,7 @@
 #----------------------------------------------------------------------------
 
 require 'rspec'
-require_relative '../lib/loon/loon'
+require_relative '../lib/loon'
 
 describe 'loon' do
     it 'should pass a dummy test' do
