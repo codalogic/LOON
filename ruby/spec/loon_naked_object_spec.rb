@@ -26,7 +26,13 @@ require 'rspec'
 require_relative '../lib/loon'
 
 describe 'loon' do
-    it 'should pass a dummy test' do
-        expect( LOON.ten ).to eq 10
+    it 'should return a Hash when given an empty string' do
+        v = LOON.parse ""
+        expect( v.class ).to eq Hash
+    end
+
+    it 'should return a Hash when given only a comment' do
+        v = LOON.parse "# A comment"
+        expect( v.class ).to eq Hash
     end
 end
