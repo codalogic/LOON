@@ -42,6 +42,10 @@ module LOON
         STATE_ERRORED = :state_errored
 
         def initialize
+            reset
+        end
+
+        def reset
             @state = STATE_INIT
             @line_num = 0
             @stack = []
