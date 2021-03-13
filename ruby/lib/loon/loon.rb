@@ -23,6 +23,16 @@
 #----------------------------------------------------------------------------
 
 module LOON
+    class Error
+        def initialize msg
+            @message = msg
+        end
+
+        def error
+            @message
+        end
+    end
+
     class LOONParser
         STATE_INIT = :state_init
         STATE_IN_OBJECT = :state_in_object
@@ -201,7 +211,9 @@ module LOON
     def self.parse str
         parser = LOONParser.new
         str.lines.each { |l| parser.parse_line l }
-        return nil if ! parser.is_good
+        if ! parser.is_good
+            return Error.new parser.error
+        end
         return parser.result
     end
 
@@ -210,7 +222,9 @@ module LOON
         File.foreach( fname ) do |line|
             parser.parse_line line
         end
-        return nil if ! parser.is_good
+        if ! parser.is_good
+            return Error.new parser.error
+        end
         return parser.result
     end
 end
