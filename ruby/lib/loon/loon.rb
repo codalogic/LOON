@@ -111,10 +111,10 @@ module LOON
             end
         end
 
+        REGEX_MEMBER_SPLIT = /([\w\.]+)\s*(.*)/
+
         def when_in_object line
-            if line == '}'
-                pop_stack
-            elsif( m = line.match( /([\w\.]+)\s*(.*)/ ) )
+            if( m = line.match( REGEX_MEMBER_SPLIT ) )
                 name = m[1]
                 rhs = m[2]
                 if @current.include? name
@@ -125,6 +125,8 @@ module LOON
                     my_current = @current  # parse_value may change @current
                     my_current[name] = parse_value rhs
                 end
+            elsif line == '}'
+                pop_stack
             elsif line == ']'
                 record_error "Unexpected array close (\"]\") in object"
             else
@@ -143,15 +145,19 @@ module LOON
             end
         end
 
+        REGEX_MULITILINE_END = /(.*)<<\w+$/
+
         def when_in_multistring line
             test_line = line.rstrip
-            if( test_line.end_with?( @multistring_end ) && m = test_line.match( /(.*)<<\w+$/ ) )
+            if( test_line.end_with?( @multistring_end ) && m = test_line.match( REGEX_MULITILINE_END ) )
                 line = m[1]
                 pop_stack
             end
             @multistring_string.concat "\n" if @multistring_string != ''
             @multistring_string.concat( string_unescape line.chomp )    # Remove any newlines but leave other trailing whitespace
         end
+
+        REGEX_MULITILINE_START = /^<<\w+$/
 
         def parse_value value
             if value == '{'
@@ -164,7 +170,7 @@ module LOON
                 @current = []
                 @state = STATE_IN_ARRAY
                 return @current
-            elsif value =~ /^<<\w+$/    # Multiline string
+            elsif value =~ REGEX_MULITILINE_START    # Multiline string
                 @stack.push [ @current, @state ]
                 @current = ""
                 @state = STATE_IN_MULTISTRING
