@@ -115,7 +115,7 @@ module LOON
                 rhs = m[2]
                 if @current.include? name
                     record_error "Duplicate name in object"
-                elsif value[0] == ':'
+                elsif rhs[0] == ':'
                     @current[name] = parse_inline_string_value rhs[1..-1].strip
                 else
                     my_current = @current  # parse_value may change @current
@@ -139,13 +139,14 @@ module LOON
             end
         end
 
-        def when_in_multistring line                    
-            if( m = line.match( /(.*+)<<\w+$/ ) )
+        def when_in_multistring line
+            test_line = line.rstrip
+            if( test_line.end_with?( @multistring_end ) && m = test_line.match( /(.*)<<\w+$/ ) )
                 line = m[1]
                 pop_stack
             end
-            @multistring_string.concat "\n" if @multistring_string == ''
-            @multistring_string.concat( string_unescape line )
+            @multistring_string.concat "\n" if @multistring_string != ''
+            @multistring_string.concat( string_unescape line.chomp )    # Remove any newlines but leave other trailing whitespace
         end
 
         def parse_value value

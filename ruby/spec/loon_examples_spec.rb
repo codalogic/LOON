@@ -27,13 +27,37 @@ require 'pp'
 require_relative '../lib/loon'
 
 describe 'loon' do
-    it 'should return a Hash when given an empty string' do
-        v = LOON.parse ""
-        expect( v.class ).to eq Hash
-    end
+    it 'should return a Hash when given LOON example message' do
+        v = LOON.parse <<-End
+        # Some details about me
+        com.codalogic.aboutme {
+            Name: Pete
+            Height: 178
+            DoB: 1969-04-18
+            Children [
+                {
+                Name: Sarah
+                Height: 170
+                }
+                {
+                Name: Jenny
+                Height: 144
+                }
+            ]
+            Grades [
+                A
+                B
+                C
+            ]
+            PlaceOfBirth: " string with leading spaces! "
+            History <<END
+                Born a long time again
+                in a galaxy far, far away.
+            <<END
+            Last: 12
+        End
 
-    it 'should return a Hash when given only a comment' do
-        v = LOON.parse "# A comment"
         expect( v.class ).to eq Hash
+        # pp v
     end
 end
