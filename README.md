@@ -7,9 +7,9 @@ An example LOON message is as follows:
 ```
 # Some fake details about me
 com.codalogic.aboutme {
-    Name: Pete
+    Name:   Pete
     Height: 178
-    DoB: 1969-04-18
+    DoB:    1969-04-18
     Children [
         {
         Name: Sarah
@@ -25,6 +25,7 @@ com.codalogic.aboutme {
         B
         C
     ]
+    PlaceOfBirth: " string with leading spaces! "
     History <<END
         Born a long time again
         in a galaxy far, far away.
