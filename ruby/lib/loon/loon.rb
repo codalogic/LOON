@@ -202,9 +202,94 @@ module LOON
             end
         end
 
+        # escaped = escape (
+        #    escape / ; \  i.e.: \\ -> \
+        #    ; N.B. quotation-mark is NOT escaped
+        #    %x62 / ; b  i.e.: \b -> backspace
+        #    %x66 / ; f  i.e.: \f -> form feed
+        #    %x6E / ; n  i.e.: \n -> line feed
+        #    %x72 / ; r  i.e.: \r -> carriage return
+        #    %x74 / ; t  i.e.: \t -> tab
+        #    %x75 4HEXDIG /  ; \uXXXX -> U+XXXX
+        #    %x55 6HEXDIG )  ; \UXXXXXX -> U+XXXXXX
+
+        ESCAPE_MAP = {
+            '\\' => "\\",
+            'b'  => "\b",
+            'f'  => "\f",
+            'n'  => "\n",
+            'r'  => "\r",
+            't'  => "\t"
+        }
+
+        RE_4_DIGIT_UNICODE_CODE_EXTRACTOR = /\\u([0-9a-fA-F]{4})(.*)/
+        RE_6_DIGIT_UNICODE_CODE_EXTRACTOR = /\\U([0-9a-fA-F]{6})(.*)/
+
         def string_unescape s
-            # TODO
-            return s
+            output = ''
+            remainder = s
+            while remainder != ''
+                lhs, rhs = remainder.split '\\', 2
+                output.concat lhs
+                if rhs.nil? || rhs == ''
+                    remainder = ''
+                elsif rhs.length < 2
+                    record_error "Illegal backslash at end of string: #{s}"
+                    return output
+                elsif ESCAPE_MAP.include? rhs[0]
+                    output.concat ESCAPE_MAP[rhs[0]]
+                    remainder = rhs[1..-1]
+                elsif rhs[0] == 'u'
+                    codepoint, remainder = extract_utf16_escape_sequence rhs
+                    return output if code.nil?    # Error recorded already
+                    output.concat codepoint.chr
+                elsif rhs[0] == 'U'
+                    if( m = rhs.match( RE_6_DIGIT_UNICODE_CODE_EXTRACTOR ) )
+                        hexcode = m[1]
+                        remainder = m[2]
+                        output.concat hexcode.to_i(16).chr
+                    else
+                        record_error "Illegal \\Uxxxxxx escape sequence in string: #{s}"
+                        return output
+                    end
+                else
+                    record_error "Illegal backslash sequence in string: \\#{rhs[0]}"
+                    return output
+                end
+            end
+            return output
+        end
+
+        def extract_utf16_escape_sequence s     # Supports UTF-16 surrogates
+            codepoint, remainder = extract_escaped_unicode_codepoint s
+            return [codepoint, remainder] if codepoint.nil?     # An error occured - error already recorded
+            if codepoint >= 0x0000dc00 && codepoint <= 0x0000dfff
+                record_error "Illegal low UTF-16 surrogate found without preceding high surrogate: #{s[0..5]}"
+                return [nil, remainder]
+            end
+            if codepoint < 0x0000d800 || codepoint > 0x0000dbff      # Succesful conversion
+                return [codepoint, remainder]
+            end
+            low_codepoint, remainder = extract_escaped_unicode_codepoint remainder
+            if codepoint.nil? || codepoint < 0x0000dc00 || codepoint > 0x0000dfff
+                record_error "Expected low surrogate after high surrogate in: #{s[0..11]}"
+                return [nil, remainder]
+            end
+            codepoint = ((codepoint & 0x3ff)<<10) + (low_codepoint & 0x3ff) + 0x10000
+            return [codepoint, remainder]
+        end
+
+        def extract_utf16_escape_codepoint s    # Single \uXXXX code only
+            if( m = rhs.match( RE_4_DIGIT_UNICODE_CODE_EXTRACTOR ) )
+                hexcode = m[1]
+                remainder = m[2]
+                codepoint = hexcode.to_i(16)
+            else
+                record_error "Illegal \\uXXXX escape sequence in: #{s[0..5]}"
+                codepoint = nil
+                remainder = ''
+            end
+            return [codepoint, remainder]
         end
 
         def pop_stack

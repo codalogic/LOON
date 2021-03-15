@@ -25,6 +25,8 @@
 require 'rspec'
 require_relative '../lib/loon'
 
+$bs = "\\"
+
 describe 'loon' do
     it 'should return a Hash when given an empty object' do
         v = LOON.parse "{\n}"
@@ -55,11 +57,22 @@ describe 'loon' do
         # Note: Double backslash is for Ruby escaping
         v = LOON.parse <<-End
             {
-                myNil : \\0
+                myNil : #{$bs}0
             }
         End
         expect( v.class ).to eq Hash
         expect( v.include? 'myNil' ).to be true
         expect( v['myNil'] ).to be_nil
+    end
+
+    it 'should return a string with a tab in if given an object with an object with a string with a \t' do
+        v = LOON.parse <<-End
+            {
+                s : String with #{$bs}t in the middle
+            }
+        End
+        expect( v.class ).to eq Hash
+        expect( v.include? 's' ).to be true
+        expect( v['s'] ).to eq "String with 	 in the middle"     # Ensure centre bit contains "<space><tab><space>" and tab hasn't been replaced by spaces
     end
 end

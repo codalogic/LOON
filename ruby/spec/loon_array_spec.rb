@@ -25,6 +25,8 @@
 require 'rspec'
 require_relative '../lib/loon'
 
+$bs = "\\"
+
 describe 'loon' do
     it 'should return an Array when given an empty array' do
         v = LOON.parse "[\n]"
@@ -44,7 +46,7 @@ describe 'loon' do
         # Note: Double backslash is for Ruby escaping
         v = LOON.parse <<-End
             [
-                \\0
+                #{$bs}0
             ]
         End
         expect( v.class ).to eq Array
