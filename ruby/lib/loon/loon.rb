@@ -119,6 +119,8 @@ module LOON
                 rhs = m[2]
                 if @current.include? name
                     record_error "Duplicate name in object"
+                elsif rhs == ''
+                    @current[name] = nil
                 elsif rhs[0] == ':'
                     @current[name] = parse_inline_string_value rhs[1..-1].strip
                 else
@@ -191,7 +193,9 @@ module LOON
         end
 
         def parse_inline_string_value value
-            if value[0] == '"' && value[-1] == '"'   # Quoted string
+            if value == '\\0'
+                return nil
+            elsif value[0] == '"' && value[-1] == '"'   # Quoted string
                 return string_unescape value[1...-1]
             else
                 return string_unescape value    # Naked string - It's up to app to decide if it's an integer, bool etc.

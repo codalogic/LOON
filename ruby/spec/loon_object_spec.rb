@@ -39,4 +39,27 @@ describe 'loon' do
         End
         expect( v.class ).to eq Hash
     end
+
+    it 'should return a nil value when given an object with a member without a value part' do
+        v = LOON.parse <<-End
+            {
+                myNil    
+            }
+        End
+        expect( v.class ).to eq Hash
+        expect( v.include? 'myNil' ).to be true
+        expect( v['myNil'] ).to be_nil
+    end
+
+    it 'should return a nil value when given an object with a member an explicit null value part' do
+        # Note: Double backslash is for Ruby escaping
+        v = LOON.parse <<-End
+            {
+                myNil : \\0
+            }
+        End
+        expect( v.class ).to eq Hash
+        expect( v.include? 'myNil' ).to be true
+        expect( v['myNil'] ).to be_nil
+    end
 end

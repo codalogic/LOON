@@ -40,6 +40,18 @@ describe 'loon' do
         expect( v.class ).to eq Array
     end
 
+    it 'should return a nil value when given an array with a member an explicit null value' do
+        # Note: Double backslash is for Ruby escaping
+        v = LOON.parse <<-End
+            [
+                \\0
+            ]
+        End
+        expect( v.class ).to eq Array
+        expect( v.length ).to eq 1
+        expect( v[0] ).to be_nil
+    end
+
     it 'should return an Array when given an array with an integer value' do
         v = LOON.parse <<-End
             [
