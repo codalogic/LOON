@@ -148,11 +148,32 @@ describe 'loon' do
         expect( v['s'] ).to eq "String with \u{102AD} in the middle"
     end
 
-    it 'should return a string with non-BMP character if given an object with a string with a \UXXXXXX code' do
+    it 'should return a string with non-BMP character if given an object with a string with a \u{XXXXXX} code' do
         # Note: $bs -> Backslash
         v = LOON.parse <<-End
             {
-                s : String with #{$bs}U0102AD in the middle
+                s : String with #{$bs}u{0102AD} in the middle
+            }
+        End
+        expect( v.class ).to eq Hash
+        expect( v.include? 's' ).to be true
+        expect( v['s'] ).to eq "String with \u{102AD} in the middle"
+    end
+
+    it 'should return a string with a tab if given an object with a string with a \u{XXXXXX} code' do
+        # Note: $bs -> Backslash
+        v = LOON.parse <<-End
+            {
+                s : String with '#{$bs}u{9}' in the middle
+            }
+        End
+        expect( v.class ).to eq Hash
+        expect( v.include? 's' ).to be true
+        expect( v['s'] ).to eq "String with '\t' in the middle"     # \t == \u0009 == TAB
+        # Note: $bs -> Backslash
+        v = LOON.parse <<-End
+            {
+                s : String with #{$bs}u{0102AD} in the middle
             }
         End
         expect( v.class ).to eq Hash
@@ -216,17 +237,31 @@ describe 'loon' do
         expect( v['s'].strip ).to eq "String with \u{102AD} in the middle"
     end
 
-    it 'should return a string with non-BMP character if given an object with a multi line string with a \UXXXXXX code' do
+    it 'should return a string with non-BMP character if given an object with a multi line string with a \u{XXXXXX} code' do
         # Note: $bs -> Backslash
         v = LOON.parse <<-End
             {
                 s <<END
-                String with #{$bs}U0102AD in the middle
+                String with #{$bs}u{0102AD} in the middle
                 <<END
             }
         End
         expect( v.class ).to eq Hash
         expect( v.include? 's' ).to be true
         expect( v['s'].strip ).to eq "String with \u{102AD} in the middle"
+    end
+
+    it 'should return a string with tab character if given an object with a multi line string with a \u{9} code' do
+        # Note: $bs -> Backslash
+        v = LOON.parse <<-End
+            {
+                s <<END
+                String with #{$bs}u{9} in the middle
+                <<END
+            }
+        End
+        expect( v.class ).to eq Hash
+        expect( v.include? 's' ).to be true
+        expect( v['s'].strip ).to eq "String with \t in the middle"
     end
 end

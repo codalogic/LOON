@@ -210,8 +210,8 @@ module LOON
         #    %x6E / ; n  i.e.: \n -> line feed
         #    %x72 / ; r  i.e.: \r -> carriage return
         #    %x74 / ; t  i.e.: \t -> tab
-        #    %x75 4HEXDIG /  ; \uXXXX -> U+XXXX
-        #    %x55 6HEXDIG )  ; \UXXXXXX -> U+XXXXXX
+        #    %x75 (4HEXDIG / "{" 1*6HEXDIG "}")
+        #         ; \uXXXX or \u{XXXXXX} -> U+XXXX
 
         ESCAPE_MAP = {
             '\\' => "\\",
@@ -223,7 +223,7 @@ module LOON
         }
 
         REGEX_4_DIGIT_UNICODE_CODE_EXTRACTOR = /u([0-9a-fA-F]{4})(.*)/
-        REGEX_6_DIGIT_UNICODE_CODE_EXTRACTOR = /U([0-9a-fA-F]{6})(.*)/
+        REGEX_MULTI_DIGIT_UNICODE_CODE_EXTRACTOR = /u\{([0-9a-fA-F]{1,6})\}(.*)/
 
         def string_unescape s
             output = ''
@@ -240,17 +240,14 @@ module LOON
                     output.concat ESCAPE_MAP[rhs[0]]
                     remainder = rhs[1..-1]
                 elsif rhs[0] == 'u'
-                    codepoint, remainder = extract_utf16_escape_sequence rhs
-                    return output if codepoint.nil?    # Error recorded already
-                    output.concat codepoint.chr('UTF-8')
-                elsif rhs[0] == 'U'
-                    if( m = rhs.match( REGEX_6_DIGIT_UNICODE_CODE_EXTRACTOR ) )
+                    if( m = rhs.match( REGEX_MULTI_DIGIT_UNICODE_CODE_EXTRACTOR ) )
                         hexcode = m[1]
                         remainder = m[2]
                         output.concat hexcode.to_i(16).chr('UTF-8')
                     else
-                        record_error "Illegal \\Uxxxxxx escape sequence in string: #{s}"
-                        return output
+                        codepoint, remainder = extract_utf16_escape_sequence rhs
+                        return output if codepoint.nil?    # Error recorded already
+                        output.concat codepoint.chr('UTF-8')
                     end
                 else
                     record_error "Illegal backslash sequence in string: \\#{rhs[0]}"
