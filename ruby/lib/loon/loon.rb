@@ -59,20 +59,23 @@ module LOON
 
         def parse_line line
             @line_num += 1
-            line.strip! if @state != STATE_IN_MULTISTRING
-            if line != "" && line[0] != '#'
-                case @state
-                    when STATE_INIT
-                        when_init line
-                    when STATE_IN_OBJECT
-                        when_in_object line
-                    when STATE_IN_ARRAY
-                        when_in_array line              
-                    when STATE_IN_MULTISTRING
-                        when_in_multistring line
-                    else
-                        # Do nothing
-                        return false
+            if @state == STATE_IN_MULTISTRING
+                when_in_multistring line
+            else
+                line.strip!
+                if line != "" && line[0] != '#'
+                    case @state
+                        when STATE_INIT
+                            when_init line
+                        when STATE_IN_OBJECT
+                            when_in_object line
+                        when STATE_IN_ARRAY
+                            when_in_array line              
+                        when STATE_IN_MULTISTRING
+                        else
+                            # Do nothing
+                            return false
+                    end
                 end
             end
             return true
