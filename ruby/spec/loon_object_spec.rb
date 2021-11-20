@@ -64,4 +64,37 @@ describe 'loon' do
         expect( v.include? 'myNil' ).to be true
         expect( v['myNil'] ).to be_nil
     end
+
+    it 'should accept an object member name starting with an @' do
+        v = LOON.parse <<-End
+            {
+                @name: Fred
+            }
+        End
+        expect( v.class ).to eq Hash
+        expect( v.include? '@name' ).to be true
+        expect( v['@name'] ).to eq "Fred"
+    end
+
+    it 'should accept an object member name with a realm' do
+        v = LOON.parse <<-End
+            {
+                org.example.name: Fred
+            }
+        End
+        expect( v.class ).to eq Hash
+        expect( v.include? 'org.example.name' ).to be true
+        expect( v['org.example.name'] ).to eq "Fred"
+    end
+
+    it 'should accept an object member name with a realm and an @' do
+        v = LOON.parse <<-End
+            {
+                org.example.@name: Fred
+            }
+        End
+        expect( v.class ).to eq Hash
+        expect( v.include? 'org.example.@name' ).to be true
+        expect( v['org.example.@name'] ).to eq "Fred"
+    end
 end

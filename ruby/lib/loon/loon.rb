@@ -114,7 +114,7 @@ module LOON
             end
         end
 
-        REGEX_MEMBER_SPLIT = /([\w\.]+)\s*(.*)/
+        REGEX_MEMBER_SPLIT = /^((?:\w+\.)*@?\w+)\s*(.*)/   # *(name ".") ["@"] name
 
         def when_in_object line
             if( m = line.match( REGEX_MEMBER_SPLIT ) )
