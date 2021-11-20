@@ -76,6 +76,33 @@ describe 'loon' do
         expect( v[1] ).to eq "200"
     end
 
+    it 'should ignore a comment in an array' do
+        v = LOON.parse <<-End
+            [
+                100
+                # A comment
+                200
+            ]
+        End
+        expect( v.class ).to eq Array
+        expect( v[0] ).to eq "100"
+        expect( v[1] ).to eq "200"
+    end
+
+    it 'should accept something that looks like a comment in a quoted string in an array' do
+        v = LOON.parse <<-End
+            [
+                100
+                "# A comment"
+                200
+            ]
+        End
+        expect( v.class ).to eq Array
+        expect( v[0] ).to eq "100"
+        expect( v[1] ).to eq "# A comment"
+        expect( v[2] ).to eq "200"
+    end
+
     it 'should return an Array with 3 elements when given an array with integer - array - integer values' do
         v = LOON.parse <<-End
             [
