@@ -25,25 +25,16 @@
 //----------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------
-// This is a hastily translated version of the Ruby version.  It is probably
-// not fit for purpose!
+// This is a hastily translated version of the Ruby version.
 //----------------------------------------------------------------------------
-
-//**********************************************
-//**********************************************
-//**********************************************
-// DEBUG - I think this now works but needs some checking
-//**********************************************
-//**********************************************
-//**********************************************
 
 class LOONError
 {
     public $message;
 
-    public function __construct( $msg )
+    public function __construct( $message )
     {
-        $this->message = $msg;
+        $this->message = $message;
     }
 
     public function error()
