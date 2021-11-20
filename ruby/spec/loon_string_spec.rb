@@ -184,6 +184,9 @@ describe 'loon' do
         expect( v.class ).to eq Hash
         expect( v.include? 's' ).to be true
         expect( v['s'] ).to eq "String with '\t' in the middle"     # \t == \u0009 == TAB
+    end
+
+    it 'should return a string with a \u{102AD} in the middle' do
         # Note: $bs -> Backslash
         v = LOON.parse <<-End
             {
