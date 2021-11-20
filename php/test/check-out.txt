@@ -1,0 +1,209 @@
+       it should return an Array when given an empty array at: test-loon-array.php(30)
+       ===============================================================================
+    ok: True --> True
+    ok: 0 --> 0
+
+       it should return an Array when given an array with only a comment at: test-loon-array.php(41)
+       =============================================================================================
+    ok: True --> True
+    ok: 0 --> 0
+
+       it should return a nil value when given an array with a member an explicit null value at: test-loon-array.php(55)
+       =================================================================================================================
+    ok: True --> True
+    ok: 1 --> 1
+    ok:  --> 
+
+       it should return an Array when given an array with an integer value at: test-loon-array.php(67)
+       ===============================================================================================
+    ok: True --> True
+    ok: 1 --> 1
+    ok: 100 --> 100
+
+       it should return an Array with 2 elements when given an array with two integer values at: test-loon-array.php(81)
+       =================================================================================================================
+    ok: True --> True
+    ok: 2 --> 2
+    ok: 100 --> 100
+    ok: 200 --> 200
+
+       it should ignore a comment in an array at: test-loon-array.php(96)
+       ==================================================================
+    ok: True --> True
+    ok: 2 --> 2
+    ok: 100 --> 100
+    ok: 200 --> 200
+
+       it should accept something that looks like a comment in a quoted string in an array at: test-loon-array.php(112)
+       ================================================================================================================
+    ok: True --> True
+    ok: 3 --> 3
+    ok: 100 --> 100
+    ok: # A comment --> # A comment
+    ok: 200 --> 200
+
+       it should return an Array with 3 elements when given an array with integer - array - integer values at: test-loon-array.php(129)
+       ================================================================================================================================
+    ok: True --> True
+    ok: 3 --> 3
+    ok: 100 --> 100
+    ok: True --> True
+    ok: 200 --> 200
+
+       it should return an Array with 3 elements when given an array with integer - array with member - integer values at: test-loon-array.php(148)
+       ============================================================================================================================================
+    ok: True --> True
+    ok: 3 --> 3
+    ok: 100 --> 100
+    ok: True --> True
+    ok: true --> true
+    ok: 200 --> 200
+
+       it should return an Array with 3 elements when given an array with integer - object - integer values at: test-loon-array.php(165)
+       =================================================================================================================================
+    ok: True --> True
+    ok: 3 --> 3
+    ok: 100 --> 100
+    ok: is_array( $v[1] ) --> True
+    ok: 200 --> 200
+
+       it should return an error with opening object but closing array markers at: test-loon-error.php(34)
+       ===================================================================================================
+    ok: LOONError --> LOONError
+    ok: Line 2: Unexpected array close ("]") in object --> Line 2: Unexpected array close ("]") in object
+
+       it should return an error with opening array but closing object markers at: test-loon-error.php(45)
+       ===================================================================================================
+    ok: LOONError --> LOONError
+    ok: Line 3: Unexpected object close ("}") in array --> Line 3: Unexpected object close ("}") in array
+
+       it should return a Hash when given LOON example message at: test-loon-examples.php(58)
+       ======================================================================================
+    ok: True --> True
+    ok: 1 --> 1
+
+       should return a Hash when given an empty string at: test-loon-naked-object.php(29)
+       ==================================================================================
+    ok: True --> True
+
+       should return a Hash when given only a comment at: test-loon-naked-object.php(34)
+       =================================================================================
+    ok: True --> True
+
+       should return a Hash when given a naked object at: test-loon-naked-object.php(47)
+       =================================================================================
+    ok: True --> True
+    ok: True --> True
+    ok: A String --> A String
+    ok: True --> True
+    ok: 100 --> 100
+
+       should return a Hash when given a naked object containg a sub-object at: test-loon-naked-object.php(67)
+       =======================================================================================================
+    ok: True --> True
+    ok: True --> True
+    ok: A String --> A String
+    ok: True --> True
+    ok: 100 --> 100
+    ok: True --> True
+    ok: True --> True
+    ok: True --> True
+    ok:  --> 
+
+       it should return a Hash when given an object with only a comment at: test-loon-object.php(35)
+       =============================================================================================
+    ok: True --> True
+    ok: 0 --> 0
+
+       it should return a nil value when given an object with a member without a value part at: test-loon-object.php(48)
+       =================================================================================================================
+    ok: True --> True
+    ok: 1 --> 1
+    ok: True --> True
+    ok:  --> 
+
+       it should return a nil value when given an object with a member an explicit null value part at: test-loon-object.php(63)
+       ========================================================================================================================
+    ok: True --> True
+    ok: 1 --> 1
+    ok: True --> True
+    ok:  --> 
+
+       it should accept an object member name starting with an @ at: test-loon-object.php(76)
+       ======================================================================================
+    ok: True --> True
+    ok: 1 --> 1
+    ok: True --> True
+    ok: Fred --> Fred
+
+       it should accept an object member name with a realm at: test-loon-object.php(89)
+       ================================================================================
+    ok: True --> True
+    ok: 1 --> 1
+    ok: True --> True
+    ok: Fred --> Fred
+
+       it should accept an object member name with a realm and an @ at: test-loon-object.php(102)
+       ==========================================================================================
+    ok: True --> True
+    ok: 1 --> 1
+    ok: True --> True
+    ok: Fred --> Fred
+
+       it should return a string if given an object with a naked string at: test-loon-string.php(39)
+       =============================================================================================
+    ok: True --> True
+    ok: 1 --> 1
+    ok: True --> True
+    ok: My string here --> My string here
+
+       it should return a string if given an object with a quoted string with leading a trailing whitespace at: test-loon-string.php(52)
+       =================================================================================================================================
+    ok: True --> True
+    ok: 1 --> 1
+    ok: True --> True
+    ok:   My string here   -->   My string here  
+
+       it should return a string if given an object with a quoted string with internal quotation marks at: test-loon-string.php(65)
+       ============================================================================================================================
+    ok: True --> True
+    ok: 1 --> 1
+    ok: True --> True
+    ok: My string here with " --> My string here with "
+
+       it should return a string if given an object with a multi line string at: test-loon-string.php(81)
+       ==================================================================================================
+    ok: True --> True
+    ok: 1 --> 1
+    ok: True --> True
+    ok: My string
+Other string
+ --> My string
+Other string
+
+
+       it should return a string if given an object with a multi line string without final end-of-line at: test-loon-string.php(96)
+       ============================================================================================================================
+    ok: True --> True
+    ok: 1 --> 1
+    ok: True --> True
+    ok: My string
+Other string  --> My string
+Other string 
+
+       it should return a string that includes comment text if given an object with a multi line string with comment text at: test-loon-string.php(112)
+       ================================================================================================================================================
+    ok: True --> True
+    ok: 1 --> 1
+    ok: True --> True
+    ok: My string
+# Not a comment as it's in a multi-line string
+Other string  --> My string
+# Not a comment as it's in a multi-line string
+Other string 
+  TODO: "Enable \ escaping in strings" at test-loon-string.php(115)
+
+    TODOs:
+    - "Enable \ escaping in strings" at test-loon-string.php(115)
+
+0 fails, 1 todos, 107 tests

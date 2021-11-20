@@ -1,0 +1,12 @@
+# See https://github.com/codalogic/exodep for details on use and format of
+# exodep file
+
+default $cl_phpunittest_dst   test/
+
+$owner codalogic
+$project cl-phpunittest
+$strand angst
+
+versions    # Invoking 'versions' must happen after setting up $owner/$project variables
+
+copy cl-phpunittest.php   ${cl_phpunittest_dst}
