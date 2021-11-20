@@ -31,6 +31,7 @@ describe 'loon' do
     it 'should return an Array when given an empty array' do
         v = LOON.parse "[\n]"
         expect( v.class ).to eq Array
+        expect( v.length ).to eq 0
     end
 
     it 'should return an Array when given an array with only a comment' do
@@ -40,6 +41,7 @@ describe 'loon' do
             ]
         End
         expect( v.class ).to eq Array
+        expect( v.length ).to eq 0
     end
 
     it 'should return a nil value when given an array with a member an explicit null value' do
@@ -61,6 +63,7 @@ describe 'loon' do
             ]
         End
         expect( v.class ).to eq Array
+        expect( v.length ).to eq 1
         expect( v[0] ).to eq "100"
     end
 
@@ -72,6 +75,7 @@ describe 'loon' do
             ]
         End
         expect( v.class ).to eq Array
+        expect( v.length ).to eq 2
         expect( v[0] ).to eq "100"
         expect( v[1] ).to eq "200"
     end
@@ -85,6 +89,7 @@ describe 'loon' do
             ]
         End
         expect( v.class ).to eq Array
+        expect( v.length ).to eq 2
         expect( v[0] ).to eq "100"
         expect( v[1] ).to eq "200"
     end
@@ -98,6 +103,7 @@ describe 'loon' do
             ]
         End
         expect( v.class ).to eq Array
+        expect( v.length ).to eq 3
         expect( v[0] ).to eq "100"
         expect( v[1] ).to eq "# A comment"
         expect( v[2] ).to eq "200"
@@ -113,6 +119,7 @@ describe 'loon' do
             ]
         End
         expect( v.class ).to eq Array
+        expect( v.length ).to eq 3
         expect( v[0] ).to eq "100"
         expect( v[1].class ).to eq Array
         expect( v[2] ).to eq "200"
@@ -129,6 +136,7 @@ describe 'loon' do
             ]
         End
         expect( v.class ).to eq Array
+        expect( v.length ).to eq 3
         expect( v[0] ).to eq "100"
         expect( v[1].class ).to eq Array
         expect( v[1][0] ).to eq "true"
@@ -145,6 +153,7 @@ describe 'loon' do
             ]
         End
         expect( v.class ).to eq Array
+        expect( v.length ).to eq 3
         expect( v[0] ).to eq "100"
         expect( v[1].class ).to eq Hash
         expect( v[2] ).to eq "200"
