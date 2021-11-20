@@ -36,4 +36,35 @@ describe 'loon' do
         v = LOON.parse "# A comment"
         expect( v.class ).to eq Hash
     end
+
+    it 'should return a Hash when given a naked object' do
+        v = LOON.parse <<-End
+            s : A String
+            n: 100
+        End
+        expect( v.class ).to eq Hash
+        expect( v.include? 's' ).to be true
+        expect( v['s'] ).to eq "A String"
+        expect( v.include? 'n' ).to be true
+        expect( v['n'] ).to eq "100"
+    end
+
+    it 'should return a Hash when given a naked object containg a sub-object' do
+        v = LOON.parse <<-End
+            s : A String
+            n: 100
+            o {
+                p
+            }
+        End
+        expect( v.class ).to eq Hash
+        expect( v.include? 's' ).to be true
+        expect( v['s'] ).to eq "A String"
+        expect( v.include? 'n' ).to be true
+        expect( v['n'] ).to eq "100"
+        expect( v.include? 'o' ).to be true
+        expect( v['o'].class ).to eq Hash
+        expect( v['o'].include? 'p' ).to be true
+        expect( v['o']['p'] ).to be nil
+    end
 end
