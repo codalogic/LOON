@@ -54,6 +54,7 @@ module LOON
             @is_naked = false
             @error_message = ''
             @multistring_string = ''
+            @multistring_preamble = ''
             @multistring_end = ''
         end
 
@@ -159,10 +160,11 @@ module LOON
                 pop_stack
             end
             @multistring_string.concat "\n" if @multistring_string != ''
+            line.sub!( /^#{@multistring_preamble}/, '' ) if @multistring_preamble != ""
             @multistring_string.concat( string_unescape line.chomp )    # Remove any newlines but leave other trailing whitespace
         end
 
-        REGEX_MULITILINE_START = /^<<\w+$/
+        REGEX_MULITILINE_START = /^(<<\w+)(?:\s*"([^"]+)")?\s*$/
 
         def parse_value value
             if value == '{'
@@ -175,12 +177,13 @@ module LOON
                 @current = []
                 @state = STATE_IN_ARRAY
                 return @current
-            elsif value =~ REGEX_MULITILINE_START    # Multiline string
+            elsif m = value.match( REGEX_MULITILINE_START )    # Multiline string
                 @stack.push [ @current, @state ]
                 @current = ""
                 @state = STATE_IN_MULTISTRING
                 @multistring_string = ''
-                @multistring_end = value
+                @multistring_end = m[1]
+                @multistring_preamble = m[2]
                 return @multistring_string
             else
                 if @state == STATE_IN_ARRAY

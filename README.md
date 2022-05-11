@@ -4,6 +4,8 @@ LOON - Line Oriented Object Notation
 
 LOON is a simple file format for configuration data.  It is intended to be easy for both humans and machines to read and write. It is a stripped-down form of JSON, that ends up looking similar to the format used by HTTP, SMTP etc.
 
+View the PDF file for the spec.
+
 An example LOON message is as follows:
 
 ```loon
@@ -31,6 +33,10 @@ com.codalogic.aboutme {
     History <<END
         Born a long time again
         in a galaxy far, far away.
+    <<END
+    MoreHistory <<END "    "
+        Multiline string with preamble to
+        be ignored.
     <<END
 }
 ```

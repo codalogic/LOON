@@ -53,6 +53,7 @@ class LOON
     private $is_naked;
     private $error_message;
     private $multistring_string;
+    private $multistring_preamble;
     private $multistring_end;
 
     private const STATE_INIT = 0;
@@ -77,6 +78,7 @@ class LOON
         $this->is_naked = false;
         $this->error_message = '';
         $this->multistring_string = '';
+        $this->multistring_preamble = '';
         $this->multistring_end = '';
     }
 
@@ -198,10 +200,12 @@ class LOON
         }
         if( $this->multistring_string != '' )
             $this->multistring_string .= "\n";
+        if( $this->multistring_preamble != '' )
+            $line = preg_replace( "/^{$this->multistring_preamble}/", '', $line);
         $this->multistring_string .= $this->string_unescape( rtrim( $line, "\n\r" ) );    // Remove any newlines but leave other trailing whitespace
     }
 
-    private const REGEX_MULITILINE_START = "/^<<\w+$/";
+    private const REGEX_MULITILINE_START = '/^(<<\w+)(?:\s*"([^"]+)")?\s*$/';
 
     private function & parse_value( $value )
     {
@@ -219,13 +223,14 @@ class LOON
             $this->state = self::STATE_IN_ARRAY;
             return $this->current;
         }
-        elseif( preg_match( self::REGEX_MULITILINE_START, $value ) > 0 ) {    // Multiline string
+        elseif( preg_match( self::REGEX_MULITILINE_START, $value, $matches ) > 0 ) {    // Multiline string
             $this->stack[] = array( &$this->current, $this->state );
             unset( $this->current );
             $this->current = "";
             $this->state = self::STATE_IN_MULTISTRING;
             $this->multistring_string = '';
-            $this->multistring_end = $value;
+            $this->multistring_end = $matches[1];
+            $this->multistring_preamble = $matches[2] ?? '';
             return $this->multistring_string;
         }
         else {

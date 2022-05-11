@@ -95,6 +95,21 @@ checkfeature( 'it should return a string if given an object with a multi line st
     check( preg_replace( '/\n\s*/', "\n", ltrim( $v['s'] ) ), "My string\nOther string " );
 });
 
+checkfeature( 'it should return a string if given an object with a multi line string with preamble characters', function() {
+    $loon = <<<End
+        {
+            s <<END "...."
+    ....    My string
+    ....    Other string <<END
+        }
+    End;
+    $v = LOON::from_string( $loon );
+    check( is_array( $v ), true );
+    check( count( $v ), 1 );
+    check( isset( $v['s'] ), true );
+    check( preg_replace( '/\n\s*/', "\n", ltrim( $v['s'] ) ), "My string\nOther string " );
+});
+
 checkfeature( 'it should return a string that includes comment text if given an object with a multi line string with comment text', function() {
     $loon = <<<End
         {

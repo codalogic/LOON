@@ -191,7 +191,16 @@ Other string
 Other string  --> My string
 Other string 
 
-       it should return a string that includes comment text if given an object with a multi line string with comment text at: test-loon-string.php(112)
+       it should return a string if given an object with a multi line string with preamble characters at: test-loon-string.php(111)
+       ============================================================================================================================
+    ok: True --> True
+    ok: 1 --> 1
+    ok: True --> True
+    ok: My string
+Other string  --> My string
+Other string 
+
+       it should return a string that includes comment text if given an object with a multi line string with comment text at: test-loon-string.php(127)
        ================================================================================================================================================
     ok: True --> True
     ok: 1 --> 1
@@ -201,9 +210,9 @@ Other string
 Other string  --> My string
 # Not a comment as it's in a multi-line string
 Other string 
-  TODO: "Enable \ escaping in strings" at test-loon-string.php(115)
+  TODO: "Enable \ escaping in strings" at test-loon-string.php(130)
 
     TODOs:
-    - "Enable \ escaping in strings" at test-loon-string.php(115)
+    - "Enable \ escaping in strings" at test-loon-string.php(130)
 
-0 fails, 1 todos, 107 tests
+0 fails, 1 todos, 111 tests
