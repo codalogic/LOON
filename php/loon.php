@@ -77,7 +77,6 @@ class LOON
         $this->current = null;
         $this->is_naked = false;
         $this->error_message = '';
-        $this->multistring_string = '';
         $this->multistring_preamble = '';
         $this->multistring_end = '';
     }
@@ -193,16 +192,19 @@ class LOON
 
     private function when_in_multistring( $line )
     {
+        $is_end = false;
         $test_line = rtrim( $line );
-        if( $this->ends_with( $test_line, @multistring_end ) && preg_match( self::REGEX_MULITILINE_END, $test_line, $m ) ) {
+        if( $this->ends_with( $test_line, $this->multistring_end ) && preg_match( self::REGEX_MULITILINE_END, $test_line, $m ) ) {
             $line = $m[1];
-            $this->pop_stack();
+            $is_end = true;
         }
-        if( $this->multistring_string != '' )
-            $this->multistring_string .= "\n";
+        if( $this->current != '' )
+            $this->current .= "\n";
         if( $this->multistring_preamble != '' )
             $line = preg_replace( "/^{$this->multistring_preamble}/", '', $line);
-        $this->multistring_string .= $this->string_unescape( rtrim( $line, "\n\r" ) );    // Remove any newlines but leave other trailing whitespace
+        $this->current .= $this->string_unescape( rtrim( $line, "\n\r" ) );    // Remove any newlines but leave other trailing whitespace
+        if( $is_end )
+            $this->pop_stack();
     }
 
     private const REGEX_MULITILINE_START = '/^(<<\w+)(?:\s*"([^"]+)")?\s*$/';
@@ -228,10 +230,9 @@ class LOON
             unset( $this->current );
             $this->current = "";
             $this->state = self::STATE_IN_MULTISTRING;
-            $this->multistring_string = '';
             $this->multistring_end = $matches[1];
             $this->multistring_preamble = $matches[2] ?? '';
-            return $this->multistring_string;
+            return $this->current;
         }
         else {
             if( $this->state == self::STATE_IN_ARRAY ) {

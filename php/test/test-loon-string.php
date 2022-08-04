@@ -93,6 +93,26 @@ checkfeature( 'it should return a string if given an object with a multi line st
     check( preg_replace( '/\n\s*/', "\n", ltrim( $v['s'] ) ), "My string\nOther string\n" );
 });
 
+checkfeature( 'it should return two strings if given an object with two multi line strings', function() {
+    $loon = <<<End
+        {
+            s <<END
+            My string
+            <<END
+            r <<END
+            Other string
+            <<END
+        }
+    End;
+    $v = LOON::from_string( $loon );
+    check( is_array( $v ), true );
+    check( count( $v ), 2 );
+    check( isset( $v['s'] ), true );
+    check( preg_replace( '/\n\s*/', "\n", ltrim( $v['s'] ) ), "My string\n" );
+    check( isset( $v['r'] ), true );
+    check( preg_replace( '/\n\s*/', "\n", ltrim( $v['r'] ) ), "Other string\n" );
+});
+
 checkfeature( 'it should return a string if given an object with a multi line string without final end-of-line', function() {
     $loon = <<<End
         {

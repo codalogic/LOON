@@ -189,7 +189,20 @@ Other string
 Other string
 
 
-       it should return a string if given an object with a multi line string without final end-of-line at: test-loon-string.php(109)
+       it should return two strings if given an object with two multi line strings at: test-loon-string.php(114)
+       =========================================================================================================
+    ok: True --> True
+    ok: 2 --> 2
+    ok: True --> True
+    ok: My string
+ --> My string
+
+    ok: True --> True
+    ok: Other string
+ --> Other string
+
+
+       it should return a string if given an object with a multi line string without final end-of-line at: test-loon-string.php(129)
        =============================================================================================================================
     ok: True --> True
     ok: 1 --> 1
@@ -198,7 +211,7 @@ Other string
 Other string  --> My string
 Other string 
 
-       it should return a string if given an object with a multi line string with preamble characters at: test-loon-string.php(124)
+       it should return a string if given an object with a multi line string with preamble characters at: test-loon-string.php(144)
        ============================================================================================================================
     ok: True --> True
     ok: 1 --> 1
@@ -207,7 +220,7 @@ Other string
 Other string  --> My string
 Other string 
 
-       it should return a string that includes comment text if given an object with a multi line string with comment text at: test-loon-string.php(140)
+       it should return a string that includes comment text if given an object with a multi line string with comment text at: test-loon-string.php(160)
        ================================================================================================================================================
     ok: True --> True
     ok: 1 --> 1
@@ -217,9 +230,9 @@ Other string
 Other string  --> My string
 # Not a comment as it's in a multi-line string
 Other string 
-  TODO: "Enable \ escaping in strings" at test-loon-string.php(143)
+  TODO: "Enable \ escaping in strings" at test-loon-string.php(163)
 
     TODOs:
-    - "Enable \ escaping in strings" at test-loon-string.php(143)
+    - "Enable \ escaping in strings" at test-loon-string.php(163)
 
-0 fails, 1 todos, 115 tests
+0 fails, 1 todos, 121 tests
