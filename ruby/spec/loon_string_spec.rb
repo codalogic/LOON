@@ -86,6 +86,24 @@ describe 'loon' do
         expect( v['s'].lstrip.gsub( /\n\s*/, "\n" ) ).to eq "My string\nOther string\n"
     end
 
+
+    it 'should return a string if given an object with a multi line string' do
+        v = LOON.parse <<-End
+            {
+                s <<END
+                My string
+                <<END
+                r <<END
+                Other string
+                <<END
+            }
+        End
+        expect( v.class ).to eq Hash
+        expect( v.include? 's' ).to be true
+        expect( v['s'].lstrip.gsub( /\n\s*/, "\n" ) ).to eq "My string\n"
+        expect( v.include? 'r' ).to be true
+        expect( v['r'].lstrip.gsub( /\n\s*/, "\n" ) ).to eq "Other string\n"
+    end
     it 'should return a string if given an object with a multi line string without final end-of-line' do
         v = LOON.parse <<-End
             {

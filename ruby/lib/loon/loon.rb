@@ -53,7 +53,6 @@ module LOON
             @current = nil
             @is_naked = false
             @error_message = ''
-            @multistring_string = ''
             @multistring_preamble = ''
             @multistring_end = ''
         end
@@ -154,14 +153,16 @@ module LOON
         REGEX_MULITILINE_END = /(.*)<<\w+$/
 
         def when_in_multistring line
+            is_end = false
             test_line = line.rstrip
             if( test_line.end_with?( @multistring_end ) && m = test_line.match( REGEX_MULITILINE_END ) )
                 line = m[1]
-                pop_stack
+                is_end = true
             end
-            @multistring_string.concat "\n" if @multistring_string != ''
+            @current.concat "\n" if @current != ''
             line.sub!( /^#{@multistring_preamble}/, '' ) if @multistring_preamble != ""
-            @multistring_string.concat( string_unescape line.chomp )    # Remove any newlines but leave other trailing whitespace
+            @current.concat( string_unescape line.chomp )    # Remove any newlines but leave other trailing whitespace
+            pop_stack if is_end
         end
 
         REGEX_MULITILINE_START = /^(<<\w+)(?:\s*"([^"]+)")?\s*$/
@@ -181,10 +182,9 @@ module LOON
                 @stack.push [ @current, @state ]
                 @current = ""
                 @state = STATE_IN_MULTISTRING
-                @multistring_string = ''
                 @multistring_end = m[1]
                 @multistring_preamble = m[2]
-                return @multistring_string
+                return @current
             else
                 if @state == STATE_IN_ARRAY
                     return parse_inline_string_value value
