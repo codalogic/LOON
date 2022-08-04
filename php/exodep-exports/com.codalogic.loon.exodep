@@ -1,0 +1,14 @@
+# See https://github.com/codalogic/exodep for details on use and format of
+# exodep file
+
+ondir htdocs   default $php_dst htdocs/
+ondir httpdocs default $php_dst httpdocs/
+ondir wwwroot  default $php_dst wwwroot/
+default $php_dst ./
+
+default $cl_loon_dst   ${php_dst}
+
+$owner codalogic
+$project LOON
+
+get php/loon.php   ${cl_loon_dst}
