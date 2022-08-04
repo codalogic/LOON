@@ -28,6 +28,17 @@ require_relative '../lib/loon'
 $bs = "\\"
 
 describe 'loon' do
+    it 'should return an empty string if given an object with an empty string' do
+        v = LOON.parse <<-End
+            {
+                s :
+            }
+        End
+        expect( v.class ).to eq Hash
+        expect( v.include? 's' ).to be true
+        expect( v['s'] ).to eq ""
+    end
+
     it 'should return a string if given an object with a naked string' do
         v = LOON.parse <<-End
             {

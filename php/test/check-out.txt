@@ -150,28 +150,35 @@
     ok: True --> True
     ok: Fred --> Fred
 
-       it should return a string if given an object with a naked string at: test-loon-string.php(39)
+       it should return an empty string if given an object with an empty string at: test-loon-string.php(39)
+       =====================================================================================================
+    ok: True --> True
+    ok: 1 --> 1
+    ok: True --> True
+    ok:  --> 
+
+       it should return a string if given an object with a naked string at: test-loon-string.php(52)
        =============================================================================================
     ok: True --> True
     ok: 1 --> 1
     ok: True --> True
     ok: My string here --> My string here
 
-       it should return a string if given an object with a quoted string with leading a trailing whitespace at: test-loon-string.php(52)
+       it should return a string if given an object with a quoted string with leading a trailing whitespace at: test-loon-string.php(65)
        =================================================================================================================================
     ok: True --> True
     ok: 1 --> 1
     ok: True --> True
     ok:   My string here   -->   My string here  
 
-       it should return a string if given an object with a quoted string with internal quotation marks at: test-loon-string.php(65)
+       it should return a string if given an object with a quoted string with internal quotation marks at: test-loon-string.php(78)
        ============================================================================================================================
     ok: True --> True
     ok: 1 --> 1
     ok: True --> True
     ok: My string here with " --> My string here with "
 
-       it should return a string if given an object with a multi line string at: test-loon-string.php(81)
+       it should return a string if given an object with a multi line string at: test-loon-string.php(94)
        ==================================================================================================
     ok: True --> True
     ok: 1 --> 1
@@ -182,7 +189,16 @@ Other string
 Other string
 
 
-       it should return a string if given an object with a multi line string without final end-of-line at: test-loon-string.php(96)
+       it should return a string if given an object with a multi line string without final end-of-line at: test-loon-string.php(109)
+       =============================================================================================================================
+    ok: True --> True
+    ok: 1 --> 1
+    ok: True --> True
+    ok: My string
+Other string  --> My string
+Other string 
+
+       it should return a string if given an object with a multi line string with preamble characters at: test-loon-string.php(124)
        ============================================================================================================================
     ok: True --> True
     ok: 1 --> 1
@@ -191,16 +207,7 @@ Other string
 Other string  --> My string
 Other string 
 
-       it should return a string if given an object with a multi line string with preamble characters at: test-loon-string.php(111)
-       ============================================================================================================================
-    ok: True --> True
-    ok: 1 --> 1
-    ok: True --> True
-    ok: My string
-Other string  --> My string
-Other string 
-
-       it should return a string that includes comment text if given an object with a multi line string with comment text at: test-loon-string.php(127)
+       it should return a string that includes comment text if given an object with a multi line string with comment text at: test-loon-string.php(140)
        ================================================================================================================================================
     ok: True --> True
     ok: 1 --> 1
@@ -210,9 +217,9 @@ Other string
 Other string  --> My string
 # Not a comment as it's in a multi-line string
 Other string 
-  TODO: "Enable \ escaping in strings" at test-loon-string.php(130)
+  TODO: "Enable \ escaping in strings" at test-loon-string.php(143)
 
     TODOs:
-    - "Enable \ escaping in strings" at test-loon-string.php(130)
+    - "Enable \ escaping in strings" at test-loon-string.php(143)
 
-0 fails, 1 todos, 111 tests
+0 fails, 1 todos, 115 tests

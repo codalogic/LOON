@@ -201,7 +201,7 @@ module LOON
         def parse_inline_string_value value
             if value == '\\0'
                 return nil
-            elsif value[0] == '"' && value[-1] == '"'   # Quoted string
+            elsif value.length >= 2 && value[0] == '"' && value[-1] == '"'   # Quoted string
                 return string_unescape value[1...-1]
             else
                 return string_unescape value    # Naked string - It's up to app to decide if it's an integer, bool etc.

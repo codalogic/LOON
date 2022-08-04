@@ -25,6 +25,19 @@
 
 $bs = "\\";
 
+checkfeature( 'it should return an empty string if given an object with an empty string', function() {
+    $loon = <<<End
+        {
+            s :
+        }
+    End;
+    $v = LOON::from_string( $loon );
+    check( is_array( $v ), true );
+    check( count( $v ), 1 );
+    check( isset( $v['s'] ), true );
+    check( $v['s'], "" );
+});
+
 checkfeature( 'it should return a string if given an object with a naked string', function() {
     $loon = <<<End
         {

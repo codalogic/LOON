@@ -255,7 +255,7 @@ class LOON
     {
         if( $value == '\0' )
             return null;
-        elseif( $value[0] == '"' && $value[strlen($value)-1] == '"' )   // Quoted string
+        elseif( strlen( $value ) >= 2 && $value[0] == '"' && $value[strlen($value)-1] == '"' )   // Quoted string
             return $this->string_unescape( substr( $value, 1, -1 ) );
         else
             return $this->string_unescape( $value );    // Naked string - It's up to app to decide if it's an integer, bool etc.
